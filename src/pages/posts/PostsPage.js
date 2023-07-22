@@ -39,9 +39,10 @@ function PostsPage({ message, filter = "" }) {
     const timer = setTimeout(() => {
       fetchPosts();
     }, 1000);
+
     return () => {
       clearTimeout(timer);
-    }
+    };
   }, [filter, query, pathname]);
 
   return (
@@ -49,35 +50,31 @@ function PostsPage({ message, filter = "" }) {
       <Col className="py-2 p-0 p-lg-2" lg={8}>
         <p>Popular profiles mobile</p>
         <i className={`fas fa-search ${styles.SearchIcon}`} />
-        <form 
-        className={styles.SearchBar}
-        onSubmit={(event) => event.preventDefault()}
+        <Form
+          className={styles.SearchBar}
+          onSubmit={(event) => event.preventDefault()}
         >
-          <Form.Control 
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          type="text" 
-          className="mr-sm-2" 
-          placeholder="Search posts"
+          <Form.Control
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            type="text"
+            className="mr-sm-2"
+            placeholder="Search posts"
           />
-        </form>
-
+        </Form>
 
         {hasLoaded ? (
           <>
             {posts.results.length ? (
-              <InfiniteScroll 
-                children={
-                  posts.results.map((post) => (
-                <Post key={post.id} {...post} setPosts={setPosts} />
-              ))
-                }
+              <InfiniteScroll
+                children={posts.results.map((post) => (
+                  <Post key={post.id} {...post} setPosts={setPosts} />
+                ))}
                 dataLength={posts.results.length}
                 loader={<Asset spinner />}
                 hasMore={!!posts.next}
                 next={() => fetchMoreData(posts, setPosts)}
               />
-              
             ) : (
               <Container className={appStyles.Content}>
                 <Asset src={NoResults} message={message} />
